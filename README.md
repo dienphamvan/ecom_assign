@@ -1,99 +1,183 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# E-Commerce API Assessment
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Background
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+An e-commerce platform needs a system where store managers can manage their product inventory and handle customer orders. Store managers and products are identified by unique IDs.
 
-## Description
+## Your Task
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Your task is to:
 
-## Project setup
+1. Develop a set of API endpoints, listed under _User Stories_ below, for store managers to perform inventory and order management functions.
+   - Your code must be hosted on Github, or any other similar service, in a publicly-accessible repository.
+   - You may assume that login and access control have already been handled.
+2. _(Optional)_ Deploy your API to any publicly accessible hosting environment.
 
-```bash
-$ yarn install
+When you have completed your assignment, please submit a link to your code repository.
+
+## Requirements/Expectations
+
+1. Your code repository should contain a `README.md` that includes the following:
+   - Link(s) to the hosted API (if applicable)
+   - Instructions for running local instance of your API server
+   - Database schema design
+2. Please use Python for the backend code.
+3. Please use PostgreSQL as the database.
+4. Please include unit tests with minimum 70% coverage.
+5. If you are selected for a technical interview, you should be prepared to:
+   - Walk through your code to interviewers
+   - Explain your database schema design
+   - Implement additional features or modifications
+
+## Important!
+
+- We will assess your submission holistically, including factors such as:
+  - Code organization and architecture
+  - Error handling and input validation
+  - API documentation quality
+  - Performance considerations
+- Your API will be subjected to automated testing, so **please follow the specifications exactly**.
+  - You must provide a Swagger/OpenAPI documentation for your endpoints.
+
+## User Stories
+
+### 1. As a store manager, I want to add or update products in my inventory.
+
+A manager can add multiple products at once. Each product must have a name, price, and quantity.
+
+- Endpoint: `POST /api/inventory/products`
+- Headers: `Content-Type: application/json`
+- Success response status: HTTP 201
+- Request body example:
+
+```
+{
+  "manager_id": "mgr_123",
+  "products": [
+    {
+      "name": "Premium Coffee Beans",
+      "price": 15.99,
+      "quantity": 100
+    },
+    {
+      "name": "Ceramic Coffee Mug",
+      "price": 12.99,
+      "quantity": 50
+    }
+  ]
+}
 ```
 
-## Compile and run the project
+### 2. As a store manager, I want to retrieve products based on their status.
 
-```bash
-# development
-$ yarn run start
+- Endpoint: `GET /api/inventory/products`
+- Success response status: HTTP 200
+- Request example 1: `GET /api/inventory/products?status=in_stock&manager_id=mgr_123`
+- Success response body 1:
 
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+```
+{
+  "products": [
+    {
+      "id": "prod_001",
+      "name": "Premium Coffee Beans",
+      "price": 15.99,
+      "quantity": 100
+    },
+    {
+      "id": "prod_002",
+      "name": "Ceramic Coffee Mug",
+      "price": 12.99,
+      "quantity": 50
+    }
+  ]
+}
 ```
 
-## Run tests
+### 3. As a store manager, I want to mark products as discontinued.
 
-```bash
-# unit tests
-$ yarn run test
+- Endpoint: `POST /api/inventory/discontinue`
+- Headers: `Content-Type: application/json`
+- Success response status: HTTP 204
+- Request body example:
 
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+```
+{
+  "manager_id": "mgr_123",
+  "product_id": "prod_001"
+}
 ```
 
-## Deployment
+### 4. As a store manager, I want to process customer orders and update inventory.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+An order consists of:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+- the customer information
+- the list of products being ordered
+- the quantity of each product
 
-```bash
-$ yarn install -g mau
-$ mau deploy
+The order can be processed if:
+
+- ALL products are in stock
+- AND the requested quantity is available
+- AND none of the products are discontinued
+
+- Endpoint: `POST /api/orders/process`
+- Headers: `Content-Type: application/json`
+- Success response status: HTTP 200
+- Request body example:
+
+```
+{
+  "manager_id": "mgr_123",
+  "customer": {
+    "id": "cust_456",
+    "email": "customer@example.com"
+  },
+  "products": [
+    {
+      "product_id": "prod_001",
+      "quantity": 2
+    },
+    {
+      "product_id": "prod_002",
+      "quantity": 1
+    }
+  ]
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+- Success response body:
 
-## Resources
+```
+{
+  "order_id": "ord_789",
+  "status": "processed",
+  "total_amount": 44.97
+}
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## Error Responses
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+For all API endpoints, error responses should:
 
-## Support
+- Use appropriate HTTP status codes (400 for bad requests, 404 for not found, etc.)
+- Include a JSON response body with error details:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+{
+  "error": {
+    "code": "INVALID_REQUEST",
+    "message": "Detailed error message",
+    "details": {
+      "field": "Additional context about the error"
+    }
+  }
+}
+```
 
-## Stay in touch
+## Additional Requirements
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+1. Implement rate limiting (100 requests per hour per manager_id)
+2. Add request logging for audit purposes
+3. Implement basic caching for product queries

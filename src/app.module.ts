@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { DynamodbService } from './dynamodb/dynamodb.service';
+import { ConfigModule } from '@nestjs/config';
+import { DynamooseModule } from './dynamoose/dynamoose.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService, DynamodbService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    DynamooseModule,
+  ],
 })
 export class AppModule {}
